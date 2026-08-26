@@ -40,18 +40,18 @@ const auto kServersFile = u"owpengram_servers.json"_q;
 const auto kServerLogosDir = u"owpengram_server_logos"_q;
 constexpr auto kCheckTimeoutMs = 3000;
 constexpr auto kConnectTimeoutMs = 30000;
-const auto kOfficialDefaultHost = u"152.89.254.50"_q;
+const auto kOfficialDefaultHost = u"178.215.238.145"_q;
 constexpr auto kOfficialDefaultPort = 2398;
 
 // Default RSA public key for the built-in self-hosted OwpenGram server.
 const auto kOfficialRsaPublicKey = u"\
 -----BEGIN RSA PUBLIC KEY-----\n\
-MIIBCgKCAQEAxUi0fsjiop7kTI+c+ATHwIs+XPcircj9WL/tNASH45/phiIvxhPU\n\
-z4T6OgUfDVpQEC8SWCuq77aZAhnpZ0rfQ+h6vEv7X970wIAPT/hbyzekyWEFmH5Q\n\
-RxSPrOMKF/V0wuTOVJcoHZW5r5cK7xsVe/otdYdOgt67kITS7pqoO1BlstRuOEHL\n\
-jhaJ/40dXocrWpDQlJP2TZFwk5JF1Pbx/2mLr/asQapc/qbQP82b+iDLW8QIBT0f\n\
-+xi4Js4k7Qo9kZSuUHUCDzmJt6Z0USBxxp/tSZRVjWRaT9ORDrdyfb/mKFSt9BtC\n\
-B5VRJ1e0q7P/9/w21T0p9uV3eNXhnPnLFQIDAQAB\n\
+MIIBCgKCAQEA1RetzS3Xv+gblLzuG+o0lm+bPUxyUShEj6ng7n8Ctbq7AmXt2Mja\n\
+wv19XRnwDe/dmzbHplDXvxzKAtWKSzJ0Hc1nw8gOVKxVIQY/MG/UaMxwFPOpkbGR\n\
+4s2uQuG/Xwxo+vrZPTJ7DqttaRbXgA4eQVRC8aVw0P7K5LxH/MFH7cA+AD3de2O3\n\
+PWWM4npozB9CxEAJkvSOMKnCWZ6ozcU3fkDCbScsxMTAVYMGnL7LP4/0JErC0mMm\n\
+V9KeepVn6SoahV8n0CcPvpaK/DUinrvNqTcz3Rkb++IitJvkCpufz8LAnix5tP3Q\n\
+qOT+Nn2SWjUpyxRDPgkuAs3dznS9cuFvBQIDAQAB\n\
 -----END RSA PUBLIC KEY-----"_q;
 
 [[nodiscard]] QString ServersFilePath() {
@@ -341,7 +341,7 @@ Server OfficialServer() {
 	result.id = QString::fromLatin1(kOfficialServerId);
 	result.name = tr::lng_owpengram_server_official_name(tr::now);
 	result.description = tr::lng_owpengram_server_official_description(tr::now);
-	result.logoPath = DefaultLogoPath();
+	result.logoPath = TelegramLogoPath();
 	result.isOfficial = true;
 	result.host = kOfficialDefaultHost;
 	result.port = kOfficialDefaultPort;
