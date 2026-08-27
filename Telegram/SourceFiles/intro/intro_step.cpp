@@ -491,7 +491,7 @@ void Step::paintCover(QPainter &p, int top) {
 	const auto logoSize = 150;
 	const auto logoLeft = (width() - logoSize) / 2;
 	const auto logoTop = top + st::introCoverIconTop;
-	const auto logo = QImage(Branding::LogoPath.utf16());
+	const auto logo = QImage(u":/gui/art/telegram_logo_256.png"_q);
 	if (!logo.isNull()) {
 		auto scaled = logo.scaled(
 			logoSize * style::DevicePixelRatio(),
