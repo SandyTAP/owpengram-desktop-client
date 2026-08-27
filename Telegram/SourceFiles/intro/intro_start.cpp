@@ -28,7 +28,7 @@ StartWidget::StartWidget(
 	not_null<Data*> data)
 : Step(parent, account, data, true) {
 	setMouseTracking(true);
-	setTitleText(rpl::single(Branding::AppName.utf16()));
+	setTitleText(rpl::single(u"SumeGram Desktop"_q));
 	setDescriptionText(tr::lng_intro_about());
 	show();
 }

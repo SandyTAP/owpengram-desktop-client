@@ -488,19 +488,13 @@ void Step::paintCover(QPainter &p, int top) {
 	st::introCoverLeft.paint(p, left, coverHeight - st::introCoverLeft.height(), width());
 	st::introCoverRight.paint(p, width() - right - st::introCoverRight.width(), coverHeight - st::introCoverRight.height(), width());
 
-	const auto logoSize = 150;
-	const auto logoLeft = (width() - logoSize) / 2;
-	const auto logoTop = top + st::introCoverIconTop;
-	const auto logo = QImage(u":/gui/art/telegram_logo_256.png"_q);
-	if (!logo.isNull()) {
-		auto scaled = logo.scaled(
-			logoSize * style::DevicePixelRatio(),
-			logoSize * style::DevicePixelRatio(),
-			Qt::KeepAspectRatio,
-			Qt::SmoothTransformation);
-		scaled.setDevicePixelRatio(style::DevicePixelRatio());
-		p.drawImage(logoLeft, logoTop, scaled);
+	auto planeLeft = (width() - st::introCoverIcon.width()) / 2 - st::introCoverIconLeft;
+	auto planeTop = top + st::introCoverIconTop;
+	if (top < 0 && !_hasCover) {
+		auto deltaLeft = -qRound(float64(st::introPlaneWidth / st::introPlaneHeight) * top);
+		planeLeft += deltaLeft;
 	}
+	st::introCoverIcon.paint(p, planeLeft, planeTop, width());
 }
 
 int Step::contentLeft() const {
