@@ -70,6 +70,7 @@ public:
 	void setGoodProxyDomain(const QString &host, const QString &ip);
 	void suggestMainDcId(DcId mainDcId);
 	void setMainDcId(DcId mainDcId);
+	void setForceMainDc(bool force);
 	[[nodiscard]] bool hasMainDcId() const;
 	[[nodiscard]] DcId mainDcId() const;
 	[[nodiscard]] rpl::producer<DcId> mainDcIdValue() const;
@@ -240,6 +241,7 @@ private:
 	rpl::event_stream<DcId> _dcTemporaryKeyChanged;
 
 	Session *_mainSession = nullptr;
+	bool _forceMainDc = false;
 	base::flat_map<ShiftedDcId, std::unique_ptr<Session>> _sessions;
 	std::vector<std::unique_ptr<Session>> _sessionsToDestroy;
 	rpl::event_stream<ShiftedDcId> _restartsByTimeout;
@@ -475,6 +477,10 @@ void Instance::Private::suggestMainDcId(DcId mainDcId) {
 	if (!_mainDcIdForced) {
 		setMainDcId(mainDcId);
 	}
+}
+
+void Instance::Private::setForceMainDc(bool force) {
+	_forceMainDc = force;
 }
 
 void Instance::Private::setMainDcId(DcId mainDcId) {
@@ -1616,6 +1622,12 @@ not_null<Session*> Instance::Private::getSession(
 		shiftedDcId += BareDcId(_mainSession->getDcWithShift());
 	}
 
+	if (_forceMainDc && _mainSession != nullptr) {
+		const auto shift = GetDcIdShift(shiftedDcId);
+		const auto main = BareDcId(_mainSession->getDcWithShift());
+		shiftedDcId = ShiftDcId(main, shift);
+	}
+
 	if (const auto session = findSession(shiftedDcId)) {
 		return session;
 	}
@@ -1870,6 +1882,10 @@ void Instance::suggestMainDcId(DcId mainDcId) {
 
 void Instance::setMainDcId(DcId mainDcId) {
 	_private->setMainDcId(mainDcId);
+}
+
+void Instance::setForceMainDc(bool force) {
+	_private->setForceMainDc(force);
 }
 
 DcId Instance::mainDcId() const {

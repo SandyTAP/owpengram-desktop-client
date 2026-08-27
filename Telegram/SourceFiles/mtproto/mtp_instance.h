@@ -64,6 +64,7 @@ public:
 	void setGoodProxyDomain(const QString &host, const QString &ip);
 	void suggestMainDcId(DcId mainDcId);
 	void setMainDcId(DcId mainDcId);
+	void setForceMainDc(bool force);
 	[[nodiscard]] DcId mainDcId() const;
 	[[nodiscard]] rpl::producer<DcId> mainDcIdValue() const;
 	[[nodiscard]] QString systemLangCode() const;

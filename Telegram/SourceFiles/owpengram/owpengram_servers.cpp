@@ -523,11 +523,13 @@ void RestoreServerToAccount(not_null<Main::Account*> account) {
 		}
 		const auto dcId = mtp.mainDcId();
 		ApplyServerToDcOptions(&mtp.dcOptions(), server);
+		mtp.setForceMainDc(!server.multiDc);
 		mtp.reInitConnection(dcId);
 		return;
 	}
 	const auto dcId = MainDcIdForServer(server);
 	ApplyServerToDcOptions(&mtp.dcOptions(), server);
+	mtp.setForceMainDc(!server.multiDc);
 	mtp.setMainDcId(dcId);
 	mtp.reInitConnection(dcId);
 }
