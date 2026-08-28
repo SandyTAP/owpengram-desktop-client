@@ -302,6 +302,8 @@ void ApplyServerToDcOptions(
 		result = TelegramServer();
 	} else if (selection.id == QString::fromLatin1(kOfficialServerId)) {
 		result = OfficialServer();
+	} else if (selection.id == QString::fromLatin1(kLocalTestServerId)) {
+		result = LocalTestServer();
 	} else {
 		// Unknown custom server: a single-server backend on dc 1 by default.
 		result.name = selection.host;
@@ -351,6 +353,31 @@ Server OfficialServer() {
 	return result;
 }
 
+const auto kLocalTestRsaPublicKey = u"\
+-----BEGIN RSA PUBLIC KEY-----\n\
+MIIBCgKCAQEAwwXTIUP6C632tGIPmQmxanAy+0MErbbMG/kHqmGg8DEpjPOR1Zj8\n\
+t3W+xHper8QPvjEs1Cdlmonmb9LX9LxAQEGEp7LRK8DOH+0y9HIGuc0tntcPspzk\n\
+6sC6giN5eVdUD8f74IUfEawbjuhu4E3P9BQyDqZ78KD6lgmHeX5dH4VTGKD2pcuB\n\
+OHxD7LsGq+0NXAJGCCY0edGF9wRRQTsgGL+hjYZhwuu72/06/d32+ZdaIBIlqorg\n\
+0WNO7CbIWqPimQAOEfRIky9kPze+olTmk1kbYWY8w4rZTYVE7xMbzOEO4mMlAncJ\n\
+pNSgid1Sheqoxw2pSy51X+ChJssNKq2hIQIDAQAB\n\
+-----END RSA PUBLIC KEY-----"_q;
+
+Server LocalTestServer() {
+	auto result = Server();
+	result.id = QString::fromLatin1(kLocalTestServerId);
+	result.name = tr::lng_owpengram_server_localtest_name(tr::now);
+	result.description = tr::lng_owpengram_server_localtest_description(tr::now);
+	result.logoPath = TelegramLogoPath();
+	result.isOfficial = true;
+	result.host = u"192.168.0.100"_q;
+	result.port = 2398;
+	result.rsaPublicKey = kLocalTestRsaPublicKey;
+	result.multiDc = false;
+	result.mainDcId = 1;
+	return result;
+}
+
 QString FormatEndpoint(const Server &server) {
 	return u"IP: %1\nPort: %2"_q.arg(
 		server.host,
@@ -361,6 +388,7 @@ std::vector<Server> ListServers() {
 	auto result = std::vector<Server>();
 	result.push_back(TelegramServer());
 	result.push_back(OfficialServer());
+	result.push_back(LocalTestServer());
 	for (const auto &custom : ReadCustomServers()) {
 		result.push_back(custom);
 	}
@@ -413,12 +441,14 @@ std::optional<Server> AddCustomServer(
 bool IsRemovableServer(const Server &server) {
 	return !server.isOfficial
 		&& server.id != QString::fromLatin1(kTelegramServerId)
-		&& server.id != QString::fromLatin1(kOfficialServerId);
+		&& server.id != QString::fromLatin1(kOfficialServerId)
+		&& server.id != QString::fromLatin1(kLocalTestServerId);
 }
 
 bool RemoveCustomServer(const QString &id) {
 	if (id == QString::fromLatin1(kOfficialServerId)
-		|| id == QString::fromLatin1(kTelegramServerId)) {
+		|| id == QString::fromLatin1(kTelegramServerId)
+		|| id == QString::fromLatin1(kLocalTestServerId)) {
 		return false;
 	}
 	auto array = ReadCustomServersJson();

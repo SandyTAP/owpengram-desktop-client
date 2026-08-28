@@ -32,10 +32,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 #include "qr/qr_generate.h"
 #include "platform/platform_webauthn.h"
 #include "core/branding.h"
+#include "owpengram/owpengram_servers.h"
 #include "styles/style_intro.h"
 
 namespace Intro {
 namespace details {
+
+[[nodiscard]] QImage ServerLogoImageForQr(not_null<Main::Account*> account);
+
 namespace {
 
 [[nodiscard]] QImage TelegramQrExact(const Qr::Data &data, int pixel) {
@@ -64,6 +68,7 @@ namespace {
 
 [[nodiscard]] not_null<Ui::RpWidget*> PrepareQrWidget(
 		not_null<QWidget*> parent,
+		not_null<Main::Account*> account,
 		rpl::producer<QByteArray> codes) {
 	struct State {
 		explicit State(Fn<void()> callback)
@@ -120,8 +125,8 @@ namespace {
 	}, result->lifetime());
 	std::move(
 		palettes
-	) | rpl::map([] {
-		return TelegramLogoImage();
+	) | rpl::map([=] {
+		return ServerLogoImageForQr(account);
 	}) | rpl::on_next([=](QImage &&image) {
 		state->center = std::move(image);
 	}, result->lifetime());
@@ -314,7 +319,7 @@ rpl::producer<QString> QrWidget::nextButtonText() const {
 }
 
 void QrWidget::setupControls() {
-	const auto code = PrepareQrWidget(this, _qrCodes.events());
+	const auto code = PrepareQrWidget(this, &account(), _qrCodes.events());
 	rpl::combine(
 		sizeValue(),
 		code->widthValue()
@@ -572,7 +577,7 @@ void QrWidget::cancelled() {
 	api().request(base::take(_emailSignupCheckRequest)).cancel();
 }
 
-QImage TelegramLogoImage() {
+QImage ServerLogoImageForQr(not_null<Main::Account*> account) {
 	const auto size = QSize(st::introQrCenterSize, st::introQrCenterSize);
 	auto result = QImage(
 		size * style::DevicePixelRatio(),
@@ -582,7 +587,9 @@ QImage TelegramLogoImage() {
 	{
 		auto p = QPainter(&result);
 		auto hq = PainterHighQualityEnabler(p);
-		const auto logo = QImage(u":/gui/art/logo_qr_big.png"_q);
+		const auto server = Owpengram::CurrentServerForAccount(account);
+		const auto path = Owpengram::ResolveServerLogoPath(server.logoPath);
+		const auto logo = path.isEmpty() ? QImage() : QImage(path);
 		if (!logo.isNull()) {
 			const auto logoSize = size.width() * 0.95;
 			auto scaled = logo.scaled(

@@ -26,6 +26,7 @@ namespace Owpengram {
 
 inline constexpr auto kOfficialServerId = "official";
 inline constexpr auto kTelegramServerId = "telegram";
+inline constexpr auto kLocalTestServerId = "localtest";
 
 struct Server {
 	QString id;
@@ -52,6 +53,7 @@ struct Server {
 
 [[nodiscard]] Server TelegramServer();
 [[nodiscard]] Server OfficialServer();
+[[nodiscard]] Server LocalTestServer();
 [[nodiscard]] std::vector<Server> ListServers();
 [[nodiscard]] std::optional<Server> FindServer(const QString &id);
 [[nodiscard]] std::optional<Server> AddCustomServer(
