@@ -589,7 +589,10 @@ QImage ServerLogoImageForQr(not_null<Main::Account*> account) {
 		auto hq = PainterHighQualityEnabler(p);
 		const auto server = Owpengram::CurrentServerForAccount(account);
 		const auto path = Owpengram::ResolveServerLogoPath(server.logoPath);
-		const auto logo = path.isEmpty() ? QImage() : QImage(path);
+		auto logo = path.isEmpty() ? QImage() : QImage(path);
+		if (logo.isNull()) {
+			logo = QImage(Owpengram::TelegramLogoPath());
+		}
 		if (!logo.isNull()) {
 			const auto logoSize = size.width() * 0.95;
 			auto scaled = logo.scaled(
