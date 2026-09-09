@@ -40,7 +40,7 @@ const auto kServersFile = u"owpengram_servers.json"_q;
 const auto kServerLogosDir = u"owpengram_server_logos"_q;
 constexpr auto kCheckTimeoutMs = 3000;
 constexpr auto kConnectTimeoutMs = 30000;
-const auto kOfficialDefaultHost = u"178.215.238.145"_q;
+const auto kOfficialDefaultHost = u"2.27.98.189"_q;
 constexpr auto kOfficialDefaultPort = 2398;
 
 // Default RSA public key for the built-in self-hosted OwpenGram server.
