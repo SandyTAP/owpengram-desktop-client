@@ -298,10 +298,14 @@ void ApplyServerToDcOptions(
 	// Fallback for built-in ids that aren't in the live list for some reason:
 	// start from the full known profile (kind, keys, dc) and override address.
 	auto result = Server();
-	if (selection.id == QString::fromLatin1(kTelegramServerId)) {
-		result = TelegramServer();
-	} else if (selection.id == QString::fromLatin1(kOfficialServerId)) {
+	// Official Telegram is intentionally not offered as a server anymore.
+	// if (selection.id == QString::fromLatin1(kTelegramServerId)) {
+	// 	result = TelegramServer();
+	// } else
+	if (selection.id == QString::fromLatin1(kOfficialServerId)) {
 		result = OfficialServer();
+	} else if (selection.id == QString::fromLatin1(kSumeGramTestServerId)) {
+		result = SumeGramTestServer();
 	} else if (selection.id == QString::fromLatin1(kLocalTestServerId)) {
 		result = LocalTestServer();
 	} else {
@@ -353,6 +357,32 @@ Server OfficialServer() {
 	return result;
 }
 
+const auto kSumeGramTestRsaPublicKey = u"\
+-----BEGIN PUBLIC KEY-----\n\
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtjWhUFH6KfmrdFySSb3C\n\
+ORowbtVEB1fZd4Cr1eOtAxXFEJcfioy5p+v4R0LyQmXUH4FcsBT50ECWwj6BdGgp\n\
+QSprZD51jD+kLVf56/tpGC20kOQyJgmK1NnLzVxCao3eMEPC2ZXlgLpB3Q37a+Sn\n\
+hX6zhLvyVJEfs5uom58r9A46K2e8T1Cz/UNWWQLMPxN0jt/Xdwz/J3rcggMnVxJ1\n\
+O+V3RFl9f07Ur+pqFG0mVxRUxKF38N319Wfimwq6syGSaKL4ZoOyGf6v/vqzC4qg\n\
+b2vMtfmlJ1GDNfpUQjaDo4t/NAIHmhH6ErfaWIm9PgvRoEGc/YII5DfYRiuj4uFC\n\
+3wIDAQAB\n\
+-----END PUBLIC KEY-----"_q;
+
+Server SumeGramTestServer() {
+	auto result = Server();
+	result.id = QString::fromLatin1(kSumeGramTestServerId);
+	result.name = tr::lng_owpengram_server_sumegramtest_name(tr::now);
+	result.description = tr::lng_owpengram_server_sumegramtest_description(tr::now);
+	result.logoPath = TelegramLogoPath();
+	result.isOfficial = true;
+	result.host = u"2.27.98.189"_q;
+	result.port = 2498;
+	result.rsaPublicKey = kSumeGramTestRsaPublicKey;
+	result.multiDc = false;
+	result.mainDcId = 1;
+	return result;
+}
+
 const auto kLocalTestRsaPublicKey = u"\
 -----BEGIN RSA PUBLIC KEY-----\n\
 MIIBCgKCAQEAwwXTIUP6C632tGIPmQmxanAy+0MErbbMG/kHqmGg8DEpjPOR1Zj8\n\
@@ -386,8 +416,10 @@ QString FormatEndpoint(const Server &server) {
 
 std::vector<Server> ListServers() {
 	auto result = std::vector<Server>();
-	result.push_back(TelegramServer());
+	// Official Telegram is intentionally not offered as a server anymore.
+	// result.push_back(TelegramServer());
 	result.push_back(OfficialServer());
+	result.push_back(SumeGramTestServer());
 	result.push_back(LocalTestServer());
 	for (const auto &custom : ReadCustomServers()) {
 		result.push_back(custom);

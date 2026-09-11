@@ -8577,6 +8577,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 "lng_owpengram_server_official_description" = "This is the Sumegram server.";
 "lng_owpengram_server_localtest_name" = "Local Test";
 "lng_owpengram_server_localtest_description" = "Self-hosted test server at 192.168.0.100:2398.";
+"lng_owpengram_server_sumegramtest_name" = "SumeGram Test";
+"lng_owpengram_server_sumegramtest_description" = "SumeGram test server at 2.27.98.189:2498.";
 "lng_owpengram_server_add_title" = "Add Server";
 "lng_owpengram_server_edit_title" = "Edit Server";
 "lng_owpengram_server_logo" = "Server icon (optional)";
