@@ -414,13 +414,37 @@ QString FormatEndpoint(const Server &server) {
 		server.port > 0 ? QString::number(server.port) : u"—"_q);
 }
 
+Server WinterGramServer() {
+	auto result = Server();
+	result.id = u"wintergram"_q;
+	result.name = u"WinterGram"_q;
+	result.host = u"87.120.84.198"_q;
+	result.port = 2398;
+	result.description = u"WinterGram Server"_q;
+	result.rsaPublicKey = u"\
+-----BEGIN RSA PUBLIC KEY-----\n\
+MIIBCgKCAQEA7jjTczVSgSKnlJAojg33YgGHH+Oaq4kG9fLNYX8MzS8dNPeoqwGH\n\
+hATYoLKwbN+7L66Ci0bxR4KehgCDOFslCiP7s2NWvc1QjFA6LcoIQJHAo1v5IL4i\n\
+j5UajZjNA06JzesNzoLmD9YhiZbwoAYJCIZNnstM0VlR9RDXaD7Wc53bAXU+uh5/\n\
+GaOIX0aWzYkPr4ri7PabpuZ3XQeQCUBywo6KbyZ4oZq+Wzoh3t0xGAZfFuD6pfvp\n\
+K6I0VbePHQcwwZd+KYyJl1rY0ZkmsYJsX0MVpFAG6XN+5E+CtyRS7LPI6GzbleG0\n\
+dxXysJxIoTWrHUbuLz7CPoJfC6CyIHpizQIDAQAB\n\
+-----END RSA PUBLIC KEY-----"_q;
+	result.logoPath = DefaultLogoPath();
+	result.isOfficial = true;
+	result.multiDc = false;
+	result.mainDcId = 1;
+	return result;
+}
+
 std::vector<Server> ListServers() {
 	auto result = std::vector<Server>();
 	// Official Telegram is intentionally not offered as a server anymore.
 	// result.push_back(TelegramServer());
-	result.push_back(OfficialServer());
-	result.push_back(SumeGramTestServer());
-	result.push_back(LocalTestServer());
+	// result.push_back(OfficialServer());
+	// result.push_back(SumeGramTestServer());
+	// result.push_back(LocalTestServer());
+	result.push_back(WinterGramServer());
 	for (const auto &custom : ReadCustomServers()) {
 		result.push_back(custom);
 	}
