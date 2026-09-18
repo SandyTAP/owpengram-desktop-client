@@ -11,10 +11,10 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 
 namespace Branding {
 
-constexpr auto AppName = "SumeGram Desktop"_cs;
-constexpr auto ShortAppName = "SumeGram"_cs;
-constexpr auto ApplicationName = "SumeGramDesktop"_cs;
-constexpr auto CompanyName = "SumeGram"_cs;
+constexpr auto AppName = "WinterGram Desktop"_cs;
+constexpr auto ShortAppName = "WinterGram"_cs;
+constexpr auto ApplicationName = "WinterGramDesktop"_cs;
+constexpr auto CompanyName = "WinterGram"_cs;
 
 #ifdef _DEBUG
 constexpr auto WindowsIconPath = "Resources/OwpenGram/art/icon256_debug.ico"_cs;
@@ -26,10 +26,10 @@ constexpr auto LinuxIconBase = "Resources/OwpenGram/art/icon"_cs;
 
 #ifdef _DEBUG
 constexpr auto LogoPath = ":/gui/art/logo_256_debug.png"_cs;
-constexpr auto LogoNoMarginPath = ":/gui/art/logo_256_debug.png"_cs;
+constexpr auto LogoNoMarginPath = ":/gui/art/icon256.png"_cs;
 #else
 constexpr auto LogoPath = ":/gui/art/logo_256.png"_cs;
-constexpr auto LogoNoMarginPath = ":/gui/art/logo_256_no_margin.png"_cs;
+constexpr auto LogoNoMarginPath = ":/gui/art/icon256.png"_cs;
 #endif
 constexpr auto PlaneWhitePath = ":/gui/plane_white.svg"_cs;
 constexpr auto BusinessLogoPath = ":/gui/art/business_logo.png"_cs;

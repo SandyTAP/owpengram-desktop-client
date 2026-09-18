@@ -304,8 +304,8 @@ void ApplyServerToDcOptions(
 	// } else
 	if (selection.id == QString::fromLatin1(kOfficialServerId)) {
 		result = OfficialServer();
-	} else if (selection.id == QString::fromLatin1(kSumeGramTestServerId)) {
-		result = SumeGramTestServer();
+	} else if (selection.id == QString::fromLatin1(kWinterGramTestServerId)) {
+		result = WinterGramTestServer();
 	} else if (selection.id == QString::fromLatin1(kLocalTestServerId)) {
 		result = LocalTestServer();
 	} else {
@@ -320,7 +320,7 @@ void ApplyServerToDcOptions(
 }
 
 QString DefaultLogoPath() {
-	return u":/gui/art/logo_256.png"_q;
+	return u":/gui/art/icon256.png"_q;
 }
 
 QString TelegramLogoPath() {
@@ -357,7 +357,7 @@ Server OfficialServer() {
 	return result;
 }
 
-const auto kSumeGramTestRsaPublicKey = u"\
+const auto kWinterGramTestRsaPublicKey = u"\
 -----BEGIN PUBLIC KEY-----\n\
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtjWhUFH6KfmrdFySSb3C\n\
 ORowbtVEB1fZd4Cr1eOtAxXFEJcfioy5p+v4R0LyQmXUH4FcsBT50ECWwj6BdGgp\n\
@@ -368,16 +368,16 @@ b2vMtfmlJ1GDNfpUQjaDo4t/NAIHmhH6ErfaWIm9PgvRoEGc/YII5DfYRiuj4uFC\n\
 3wIDAQAB\n\
 -----END PUBLIC KEY-----"_q;
 
-Server SumeGramTestServer() {
+Server WinterGramTestServer() {
 	auto result = Server();
-	result.id = QString::fromLatin1(kSumeGramTestServerId);
-	result.name = tr::lng_owpengram_server_sumegramtest_name(tr::now);
-	result.description = tr::lng_owpengram_server_sumegramtest_description(tr::now);
+	result.id = QString::fromLatin1(kWinterGramTestServerId);
+	result.name = tr::lng_owpengram_server_wintergramtest_name(tr::now);
+	result.description = tr::lng_owpengram_server_wintergramtest_description(tr::now);
 	result.logoPath = TelegramLogoPath();
 	result.isOfficial = true;
 	result.host = u"2.27.98.189"_q;
 	result.port = 2498;
-	result.rsaPublicKey = kSumeGramTestRsaPublicKey;
+	result.rsaPublicKey = kWinterGramTestRsaPublicKey;
 	result.multiDc = false;
 	result.mainDcId = 1;
 	return result;
@@ -442,7 +442,7 @@ std::vector<Server> ListServers() {
 	// Official Telegram is intentionally not offered as a server anymore.
 	// result.push_back(TelegramServer());
 	// result.push_back(OfficialServer());
-	// result.push_back(SumeGramTestServer());
+	// result.push_back(WinterGramTestServer());
 	// result.push_back(LocalTestServer());
 	result.push_back(WinterGramServer());
 	for (const auto &custom : ReadCustomServers()) {
