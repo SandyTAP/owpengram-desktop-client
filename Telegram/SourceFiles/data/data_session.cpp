@@ -774,12 +774,14 @@ not_null<UserData*> Session::processUser(const MTPUser &data) {
 					: QString())
 				: result->nameOrPhone;
 
-			result->setName(fname, lname, pname, uname);
-			if (!minimal || result->applyMinPhoto()) {
-				if (const auto photo = data.vphoto()) {
-					result->setPhoto(*photo);
-				} else {
-					result->setPhoto(MTP_userProfilePhotoEmpty());
+			if (!data.is_deleted()) {
+				result->setName(fname, lname, pname, uname);
+				if (!minimal || result->applyMinPhoto()) {
+					if (const auto photo = data.vphoto()) {
+						result->setPhoto(*photo);
+					} else {
+						result->setPhoto(MTP_userProfilePhotoEmpty());
+					}
 				}
 			}
 			status = data.vstatus();
